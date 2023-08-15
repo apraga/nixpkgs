@@ -38313,6 +38313,8 @@ with pkgs;
 
   mirtk = callPackage ../development/libraries/science/biology/mirtk { };
 
+  multiqc = callPackage ../applications/science/biology/multiqc { };
+
   muscle = callPackage ../applications/science/biology/muscle { };
 
   n3 = callPackage ../applications/science/biology/N3 { };
