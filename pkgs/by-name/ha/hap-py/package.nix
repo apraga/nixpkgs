@@ -11,7 +11,7 @@
   makeWrapper,
   perl,
   python3,
-  # rtg-tools,
+  rtg-tools,
   samtools,
   stdenv,
   xz,
@@ -63,7 +63,8 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     autoconf
     cmake
-  ]
+    makeWrapper
+  ];
   buildInputs = [
     boost
     bzip2
@@ -74,12 +75,11 @@ stdenv.mkDerivation rec {
     xz
     zlib
   ];
-  nativeBuildInputs = [ makeWrapper ];
-  propagatedBuildInputs = runtime;
+
   postFixup = ''
     wrapProgram $out/bin/hap.py \
-      --set PATH ${lib.makeBinPath runtime}
-       --add-flags "--engine-vcfeval-path=${rtg-tools}/bin/rtg
+       --set PATH ${lib.makeBinPath runtime} \
+       --add-flags "--engine-vcfeval-path=${rtg-tools}/bin/rtg"
   '';
 
   meta = with lib; {
