@@ -2329,6 +2329,8 @@ self: super: with self; {
 
   cloup = callPackage ../development/python-modules/cloup { };
 
+  clu = callPackage ../development/python-modules/clu { };
+
   clustershell = callPackage ../development/python-modules/clustershell { };
 
   clvm = throw "clvm has been removed. see https://github.com/NixOS/nixpkgs/pull/270254";
