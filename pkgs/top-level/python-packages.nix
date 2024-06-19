@@ -2456,6 +2456,8 @@ self: super: with self; {
 
   cltk = callPackage ../development/python-modules/cltk { };
 
+  clu = callPackage ../development/python-modules/clu { };
+
   clustershell = callPackage ../development/python-modules/clustershell { };
 
   cma = callPackage ../development/python-modules/cma { };
