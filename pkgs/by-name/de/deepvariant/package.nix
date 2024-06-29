@@ -35,7 +35,7 @@ let
     protobuf
     # argparse==1.4.0
     # argparse include in python !
-    # git+https://github.com/google-research/tf-slim.git@v1.1.0
+    #emerge --update --newuse --deep --with-bdeps=y @world git+https://github.com/google-research/tf-slim.git@v1.1.0
     # "numpy==${DV_TF_NUMPY_VERSION}"
     numpy
   ]);
