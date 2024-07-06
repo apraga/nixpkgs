@@ -1,0 +1,34 @@
+diff --git a/ml_collections/config_dict/config_dict.py b/ml_collections/config_dict/config_dict.py
+index 554b78e..b61bf17 100644
+--- a/ml_collections/config_dict/config_dict.py
++++ b/ml_collections/config_dict/config_dict.py
+@@ -34,7 +34,7 @@ from typing import Any, Mapping, Optional
+ 
+ from absl import logging
+ 
+-import contextlib2
++import contextlib
+ import six
+ import yaml
+ from yaml import representer
+@@ -1260,7 +1260,7 @@ class ConfigDict:
+ 
+     super(ConfigDict, self).__setattr__('_type_safe', False)
+     try:
+-      with contextlib2.ExitStack() as stack:
++      with contextlib.ExitStack() as stack:
+         for manager in managers:
+           stack.enter_context(manager())
+         yield self
+diff --git a/requirements.txt b/requirements.txt
+index 0c9f81f..6e4bf80 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,6 +1,6 @@
+ absl-py
+ PyYAML
+ six
+-contextlib2
++contextlib
+ dataclasses;python_version<'3.7'
+ typing;python_version<'3.5'

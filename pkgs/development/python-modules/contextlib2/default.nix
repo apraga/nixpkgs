@@ -15,7 +15,7 @@ buildPythonPackage rec {
 
   # Python 3.11 not currently supported
   # https://github.com/jazzband/contextlib2/issues/43
-  disabled = pythonOlder "3.6" || pythonAtLeast "3.11";
+  disabled = pythonOlder "3.6" ; #|| pythonAtLeast "3.11";
 
   src = fetchPypi {
     inherit pname version;

@@ -30,6 +30,11 @@ buildPythonPackage rec {
     hash = "sha256-P+/McuxDOqHl0yMHo+R0u7Z/QFvoFOpSohZr/J2+aMw=";
   };
 
+  # Remove contextlib2 for recent pytohn support
+  patches = [
+    ./contextlib2.patch
+  ];
+
   # The pypi source archive does not include requirements.txt or
   # requirements-test.txt. See https://github.com/google/ml_collections/issues/7.
   postPatch = ''
@@ -39,7 +44,7 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [
     absl-py
-    contextlib2
+    # contextlib2
     pyyaml
   ];
 
