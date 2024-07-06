@@ -6,6 +6,7 @@
   etils,
   fetchPypi,
   flit-core,
+  google-cloud-logging,
   importlib-resources,
   jax,
   jaxlib,
@@ -40,6 +41,7 @@ buildPythonPackage rec {
     absl-py
     cached-property
     etils
+    google-cloud-logging
     importlib-resources
     jax
     jaxlib

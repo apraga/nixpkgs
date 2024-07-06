@@ -127,6 +127,7 @@ let
     url = "https://dev.gentoo.org/~perfinion/patches/tensorflow-patches-2.12.0.tar.bz2";
     hash = "sha256-SCRX/5/zML7LmKEPJkcM5Tebez9vv/gmE4xhT/jyqWs=";
   };
+
   protobuf-extra = linkFarm "protobuf-extra" [
     {
       name = "include";
@@ -233,6 +234,13 @@ let
         url = "https://github.com/bazelbuild/rules_cc/commit/156497dc89100db8a3f57b23c63724759d431d05.diff";
         hash = "sha256-NES1KeQmMiUJQVoV6dS4YGRxxkZEjOpFSCyOq9HZYO0=";
       })
+
+      # https://github.com/tensorflow/tensorflow/issues/58073
+      (fetchpatch {
+        name = "tensorflow-python3.12-no-distutil";
+        url = "https://gitlab.archlinux.org/archlinux/packaging/packages/tensorflow/-/blob/fff04b07ca2bc6758f81505cc396c91f7466c08a/tensorflow-2.16.1-python-distutils-removal.patch";
+        hash = "";
+       })
     ];
     postPatch = "popd";
 
@@ -612,7 +620,7 @@ let
 in
 buildPythonPackage {
   inherit version pname;
-  disabled = pythonAtLeast "3.12";
+  # disabled = pythonAtLeast "3.12";
 
   src = bazel-build.python;
 
