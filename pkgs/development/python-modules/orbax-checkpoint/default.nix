@@ -11,6 +11,7 @@
   jax,
   jaxlib,
   msgpack,
+  mock,
   nest-asyncio,
   numpy,
   protobuf,
@@ -46,6 +47,7 @@ buildPythonPackage rec {
     jax
     jaxlib
     msgpack
+    mock
     nest-asyncio
     numpy
     protobuf
