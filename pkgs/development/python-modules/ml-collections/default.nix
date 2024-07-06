@@ -29,7 +29,7 @@ buildPythonPackage rec {
   dependencies = [
     six
     absl-py
-    contextlib2
+    # contextlib2
     pyyaml
   ];
 
