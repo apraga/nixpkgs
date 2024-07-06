@@ -1,17 +1,20 @@
-{ config, lib, pkgs
-,    absl-py
-,    etils
-,    flax
-,    jax
-,    jaxlib
-,    ml-collections
-,    numpy
-,    typing-extensions
-,    wrapt
-, buildPythonPackage
-, fetchPypi
-, setuptools
-, wheel
+{
+  config,
+  lib,
+  pkgs,
+  absl-py,
+  etils,
+  flax,
+  jax,
+  jaxlib,
+  ml-collections,
+  numpy,
+  typing-extensions,
+  wrapt,
+  buildPythonPackage,
+  fetchPypi,
+  setuptools,
+  wheel,
 }:
 
 buildPythonPackage rec {
