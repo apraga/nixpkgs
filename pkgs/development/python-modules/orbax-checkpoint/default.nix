@@ -10,10 +10,12 @@
 
   # dependencies
   etils,
-  humanize,
+  fetchPypi,
+  flit-core,
   importlib-resources,
   jax,
   msgpack,
+  mock,
   nest-asyncio,
   numpy,
   protobuf,
@@ -50,10 +52,10 @@ buildPythonPackage rec {
   dependencies = [
     absl-py
     etils
-    humanize
     importlib-resources
     jax
     msgpack
+    mock
     nest-asyncio
     numpy
     protobuf
