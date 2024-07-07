@@ -6,10 +6,12 @@
   etils,
   fetchPypi,
   flit-core,
+  google-cloud-logging,
   importlib-resources,
   jax,
   jaxlib,
   msgpack,
+  mock,
   nest-asyncio,
   numpy,
   protobuf,
@@ -40,10 +42,12 @@ buildPythonPackage rec {
     absl-py
     cached-property
     etils
+    google-cloud-logging
     importlib-resources
     jax
     jaxlib
     msgpack
+    mock
     nest-asyncio
     numpy
     protobuf
