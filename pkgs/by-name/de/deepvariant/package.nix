@@ -1,6 +1,6 @@
 { config, lib, pkgs
 , mkShell
-, python3 }:
+, python311 }:
 
 
 # Source: https://github.com/google/deepvariant/blob/r1.6.1/run-prereq.sh
@@ -8,8 +8,8 @@
 # from the cache and crashes during tests (not enough RAM).
 # We try to replace contextlib2 to contextlib (thanks @K900 on Element)
 let
-  #--- Python
-  pyEnv = python3.withPackages (ps: with ps; [
+    #--- Python 3.11 while waiting for tensorflow to support 3.12
+  pyEnv = python311.withPackages (ps: with ps; [
     # contextlib # TODO replace contextlib2 to contextlib in a patch
     etils
     typing-extensions
