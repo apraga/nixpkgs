@@ -42,10 +42,6 @@ buildPythonPackage rec {
     wrapt
   ];
 
-  # do not run tests
-  doCheck = false;
-
-  # specific to buildPythonPackage, see its reference
   pyproject = true;
   build-system = [
     setuptools
