@@ -210,6 +210,6 @@ buildPythonPackage rec {
     license = licenses.asl20;
     maintainers = with maintainers; [ ndl ];
     # https://github.com/apache/beam/issues/27221
-    broken = lib.versionAtLeast pandas.version "2";
+    # broken = lib.versionAtLeast pandas.version "2";
   };
 }
