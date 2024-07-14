@@ -18,7 +18,7 @@
   matplotlib,
   numpy,
   oauth2client,
-  opencv-python-headless,
+  opencv4,
   pandas,
   psutil,
   py-cpuinfo,
@@ -30,10 +30,10 @@
   seqeval,
   six,
   tensorflow-datasets,
-  tensorflow-hub,
-  tensorflow-model-optimization,
+  # tensorflow-hub,
+  # tensorflow-model-optimization,
   tf-keras,
-  tf_slim
+  # tf_slim
 }:
 
 buildPythonPackage rec {
@@ -55,7 +55,7 @@ buildPythonPackage rec {
     matplotlib
     numpy
     oauth2client
-    opencv-python-headless
+    opencv4
     pandas
     psutil
     py-cpuinfo
@@ -67,10 +67,10 @@ buildPythonPackage rec {
     seqeval
     six
     tensorflow-datasets
-    tensorflow-hub
-    tensorflow-model-optimization
+    # tensorflow-hub
+    # tensorflow-model-optimization
     tf-keras
-    tf_slim
+    # tf_slim
   ];
 
   pyproject = true;
