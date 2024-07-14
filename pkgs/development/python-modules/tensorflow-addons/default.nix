@@ -45,12 +45,6 @@ buildPythonPackage rec {
     packaging
   ];
 
-  disabledTests = [
-    "test_typed_dict[correct]"
-    "test_typed_dict[missing_x]"
-    "test_typed_dict[wrong_y_x]"
-  ];
-
   pyproject = true;
   build-system = [
     setuptools
