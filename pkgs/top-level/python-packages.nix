@@ -16064,6 +16064,10 @@ self: super: with self; {
 
   tensorflow-datasets = callPackage ../development/python-modules/tensorflow-datasets { };
 
+  tensorflow-hub = callPackage ../development/python-modules/tensorflow-hub {
+    inherit (pkgs.darwin) cctools;
+  };
+
   tensorflow-estimator-bin = callPackage ../development/python-modules/tensorflow-estimator/bin.nix { };
 
   tensorflow-metadata = callPackage ../development/python-modules/tensorflow-metadata { };
