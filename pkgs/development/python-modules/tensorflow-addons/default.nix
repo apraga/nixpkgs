@@ -37,7 +37,7 @@ buildPythonPackage rec {
     owner = "tensorflow";
     repo = "addons";
     rev = "v${version}";
-    sha256 = "sha256-2tIZsbB33JlSlvJ2QcE1s6l+G0NYt37V+nVII64qduQ=";
+    hash = "sha256-2tIZsbB33JlSlvJ2QcE1s6l+G0NYt37V+nVII64qduQ=";
   };
 
   dependencies = [
