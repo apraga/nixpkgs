@@ -15258,6 +15258,8 @@ self: super: with self; {
 
   textx = callPackage ../development/python-modules/textx { };
 
+  tf-models-official = callPackage ../development/python-modules/tf-models-official { };
+
   tf-keras = callPackage ../development/python-modules/tf-keras { };
 
   tf2onnx = callPackage ../development/python-modules/tf2onnx { };

@@ -34,7 +34,7 @@ let
     requests
     six
     sortedcontainers
-    # tensorflow-addons TODO
+    tensorflow-addons
     # tf-models-official TODO
     typing-extensions
   ]);
