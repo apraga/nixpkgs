@@ -15988,6 +15988,8 @@ self: super: with self; {
 
   tensordict = callPackage ../development/python-modules/tensordict { };
 
+  tensorflow-addons = callPackage ../development/python-modules/tensorflow-addons { };
+
   tensorflow-bin = callPackage ../development/python-modules/tensorflow/bin.nix {
     inherit (pkgs.config) cudaSupport;
     # https://www.tensorflow.org/install/source#gpu
