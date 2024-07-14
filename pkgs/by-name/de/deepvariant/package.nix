@@ -10,7 +10,6 @@
 let
     #--- Python 3.11 while waiting for tensorflow to support 3.12
   pyEnv = python311.withPackages (ps: with ps; [
-    # Pillow TODO
     altair
     clu
     crcmod
@@ -27,6 +26,7 @@ let
     numpy
     oauth2client
     pandas
+    pillow
     protobuf
     psutil
     pyasn1
