@@ -31,8 +31,6 @@ buildPythonPackage rec {
   pname = "tensorflow-addons";
   version = "0.23.0";
 
-  disabled = pythonAtLeast "3.12";
-
   src = fetchFromGitHub {
     owner = "tensorflow";
     repo = "addons";

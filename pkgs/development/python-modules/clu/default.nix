@@ -1,7 +1,4 @@
 {
-  config,
-  lib,
-  pkgs,
   absl-py,
   etils,
   flax,
@@ -21,9 +18,6 @@
 buildPythonPackage rec {
   pname = "clu";
   version = "0.0.12";
-
-  #--- Python 3.11 while waiting for tensorflow to support 3.12
-  disabled = pythonAtLeast "3.12";
 
   src = fetchPypi {
     inherit pname version;

@@ -42,7 +42,7 @@ buildPythonPackage rec {
 
   src = fetchPypi {
     inherit pname version;
-    hash = "";
+    hash = "sha256-c6PYAggRnjW4t9R02tRQsn4gqidSnWunKWi1HETdPDg=;";
   };
 
   dependencies = [
