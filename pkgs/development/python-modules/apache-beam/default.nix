@@ -11,6 +11,7 @@
   freezegun,
   grpcio,
   grpcio-tools,
+  jinja2,
   hdfs,
   httplib2,
   hypothesis,
@@ -44,30 +45,22 @@
   tenacity,
   testcontainers,
   typing-extensions,
+  yapf,
   zstandard,
+
 }:
 
 buildPythonPackage rec {
   pname = "apache-beam";
-  version = "2.59.0";
+  version = "2.62.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "apache";
     repo = "beam";
     tag = "v${version}";
-    hash = "sha256-JeVYfXAx/GBGXQKAt6pSpnxH83oyeDylEY12EDzMxnw=";
+    hash = "sha256-vLvnRZAQg9nhUOI0SIUn+9Y8O7edK3445PkdhPbhO3Y=";
   };
-
-  patches = [
-    (fetchpatch {
-      # https://github.com/apache/beam/pull/24143
-      name = "fix-for-dill-0.3.6.patch";
-      url = "https://github.com/apache/beam/commit/7e014435b816015d21cc07f3f6c80809f3d8023d.patch";
-      hash = "sha256-iUmnzrItTFM98w3mpadzrmtI3t0fucpSujAg/6qxCGk=";
-      stripLen = 2;
-    })
-  ];
 
   pythonRelaxDeps = [
     # See https://github.com/NixOS/nixpkgs/issues/156957
@@ -94,8 +87,10 @@ buildPythonPackage rec {
   nativeBuildInputs = [
     cython
     grpcio-tools
+    jinja2
     mypy-protobuf
     setuptools
+    yapf
   ];
 
   propagatedBuildInputs = [
