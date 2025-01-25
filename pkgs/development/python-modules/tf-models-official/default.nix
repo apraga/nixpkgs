@@ -30,7 +30,7 @@
   seqeval,
   six,
   tensorflow-datasets,
-  # tensorflow-hub,
+  tensorflow-hub,
   # tensorflow-model-optimization,
   tf-keras,
   # tf_slim
@@ -66,8 +66,8 @@ buildPythonPackage rec {
     sentencepiece
     seqeval
     six
-    tensorflow-datasets
-    # tensorflow-hub
+    # tensorflow-datasets # FIXME
+    tensorflow-hub
     # tensorflow-model-optimization
     tf-keras
     # tf_slim
