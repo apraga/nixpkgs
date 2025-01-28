@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 558b8869..2c660403 100644
+--- a/setup.py
++++ b/setup.py
+@@ -289,7 +289,7 @@ if __name__ == '__main__':
+   generate_external_transform_wrappers()
+ 
+   # These data files live elsewhere in the full Beam repository.
+-  copy_tests_from_docs()
++  # copy_tests_from_docs()
+ 
+   # generate cythonize extensions only if we are building a wheel or
+   # building an extension or running in editable mode.
