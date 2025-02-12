@@ -1,0 +1,155 @@
+diff --git a/cnvlib/segmentation/hmm.py b/cnvlib/segmentation/hmm.py
+index e757824..2b6d442 100755
+--- a/cnvlib/segmentation/hmm.py
++++ b/cnvlib/segmentation/hmm.py
+@@ -4,7 +4,9 @@ import logging
+ 
+ import numpy as np
+ import pandas as pd
+-import pomegranate as pom
++import pomegranate.distributions
++from pomegranate.distributions import Normal
++from pomegranate.hmm import DenseHMM
+ import scipy.special
+ 
+ from ..cnary import CopyNumArray as CNA
+@@ -93,25 +95,25 @@ def hmm_get_model(cnarr, method, diploid_parx_genome, processes):
+     if method == "hmm-germline":
+         state_names = ["loss", "neutral", "gain"]
+         distributions = [
+-            pom.NormalDistribution(-1.0, stdev, frozen=True),
+-            pom.NormalDistribution(0.0, stdev, frozen=True),
+-            pom.NormalDistribution(0.585, stdev, frozen=True),
++            Normal([-1.0], [stdev], covariance_type="diag", frozen=True),
++            Normal([0.0], [stdev], covariance_type="diag", frozen=True),
++            Normal([0.585], [stdev], covariance_type="diag", frozen=True),
+         ]
+     elif method == "hmm-tumor":
+         state_names = ["del", "loss", "neutral", "gain", "amp"]
+         distributions = [
+-            pom.NormalDistribution(-2.0, stdev, frozen=False),
+-            pom.NormalDistribution(-0.5, stdev, frozen=False),
+-            pom.NormalDistribution(0.0, stdev, frozen=True),
+-            pom.NormalDistribution(0.3, stdev, frozen=False),
+-            pom.NormalDistribution(1.0, stdev, frozen=False),
++            Normal([-2.0], [stdev], covariance_type="diag", frozen=False),
++            Normal([-0.5], [stdev], covariance_type="diag", frozen=False),
++            Normal([0.0], [stdev], covariance_type="diag", frozen=True),
++            Normal([0.3], [stdev], covariance_type="diag", frozen=False),
++            Normal([1.0], [stdev], covariance_type="diag", frozen=False),
+         ]
+     else:
+         state_names = ["loss", "neutral", "gain"]
+         distributions = [
+-            pom.NormalDistribution(-1.0, stdev, frozen=False),
+-            pom.NormalDistribution(0.0, stdev, frozen=False),
+-            pom.NormalDistribution(0.585, stdev, frozen=False),
++            Normal([-1.0], [stdev], covariance_type="diag", frozen=False),
++            Normal([0.0], [stdev], covariance_type="diag", frozen=False),
++            Normal([0.585], [stdev], covariance_type="diag", frozen=False),
+         ]
+ 
+     n_states = len(distributions)
+@@ -124,27 +126,22 @@ def hmm_get_model(cnarr, method, diploid_parx_genome, processes):
+     transition_matrix = (
+         np.identity(n_states) * 100 + np.ones((n_states, n_states)) / n_states
+     )
+-
+-    model = pom.HiddenMarkovModel.from_matrix(
+-        transition_matrix,
+-        distributions,
+-        start_probabilities,
+-        state_names=state_names,
+-        name=method,
++    # Rescale so max is 1.0
++    transition_matrix /= transition_matrix.max()
++
++    model = DenseHMM(
++        edges=transition_matrix,
++        distributions=distributions,
++        starts=start_probabilities,
++        ends=start_probabilities,
++        inertia=0.8  # Allow updating dists, but slowly
++     )
++
++     model.fit(
++         X=observations,
++         weights=[obs.shape[-1] for obs in observations]
+     )
+ 
+-    model.fit(
+-        sequences=observations,
+-        weights=[len(obs) for obs in observations],
+-        distribution_inertia=0.8,  # Allow updating dists, but slowly
+-        edge_inertia=0.1,
+-        # lr_decay=.75,
+-        pseudocount=5,
+-        use_pseudocount=True,
+-        max_iterations=100000,
+-        n_jobs=processes,
+-        verbose=False,
+-    )
+     return model
+ 
+ 
+@@ -170,8 +167,8 @@ def variants_in_segment(varr, segment, min_variants=50):
+         observations = varr.mirrored_baf(above_half=True)
+         state_names = ["neutral", "alt"]
+         distributions = [
+-            pom.NormalDistribution(0.5, 0.1, frozen=True),
+-            pom.NormalDistribution(0.67, 0.1, frozen=True),
++            Normal([0.5], [0.1], covariance_type="diag", frozen=True),
++            Normal([0.67], [0.1], covariance_type="diag", frozen=True),
+         ]
+         n_states = len(distributions)
+         # Starts -- prefer neutral
+@@ -181,24 +178,22 @@ def variants_in_segment(varr, segment, min_variants=50):
+         transition_matrix = (
+             np.identity(n_states) * 100 + np.ones((n_states, n_states)) / n_states
+         )
+-        model = pom.HiddenMarkovModel.from_matrix(
+-            transition_matrix,
+-            distributions,
+-            start_probabilities,
+-            state_names=state_names,
+-            name="loh",
++        # Rescale so max is 1.0
++        transition_matrix /= transition_matrix.max()
++        model = DenseHMM(
++            edges=transition_matrix,
++            distributions=distributions,
++            starts=start_probabilities,
++            ends=start_probabilities,
++            edge_inertia=0.1,
++            # lr_decay=0.75,
+         )
+ 
+         model.fit(
+-            sequences=[observations],
+-            edge_inertia=0.1,
+-            lr_decay=0.75,
+-            pseudocount=5,
+-            use_pseudocount=True,
+-            max_iterations=100000,
+-            # n_jobs=1,  # processes,
+-            verbose=False,
++            X=observations,
++            weights=[obs.shape[-1] for obs in observations]
+         )
++
+         states = np.array(model.predict(observations, algorithm="map"))
+ 
+         logging.info("Done, now finalizing")
+diff --git a/skgenome/intersect.py b/skgenome/intersect.py
+index eab5fb0..299df66 100644
+--- a/skgenome/intersect.py
++++ b/skgenome/intersect.py
+@@ -58,7 +58,7 @@ def into_ranges(
+     if summary_func is None:
+         # Choose a type-appropriate summary function
+         elem = source[src_col].iat[0]
+-        if isinstance(elem, (str, np.string_)):
++        if isinstance(elem, (str, np.bytes_)):
+             summary_func = join_strings
+         elif isinstance(elem, (float, np.float64)):
+             summary_func = np.nanmedian

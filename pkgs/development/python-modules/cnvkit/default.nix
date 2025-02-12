@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  fetchpatch,
   rPackages,
   buildPythonPackage,
   biopython,
@@ -34,6 +35,16 @@ buildPythonPackage rec {
     hash = "sha256-ZdE3EUNZpEXRHTRKwVhuj3BWQWczpdFbg4pVr0+AHiQ=";
   };
 
+  patches = [
+    # Numpy 2 deprecation
+    (fetchpatch {
+      name = "user-write-access-check";
+      url = "https://github.com/etal/cnvkit/commit/5cb6aeaf40ea5572063cf9914c456c307b7ddf7a.patch";
+      hash = "sha256-VwGAMGKuX2Kx9xL9GX/PB94/7LkT0dSLbWIfVO8F9NI=";
+    })
+    ./hmm_new_api.patch
+  ];
+
   postPatch = ''
     # see https://github.com/etal/cnvkit/issues/589
     substituteInPlace setup.py \
@@ -41,6 +52,9 @@ buildPythonPackage rec {
     # see https://github.com/etal/cnvkit/issues/680
     substituteInPlace test/test_io.py \
       --replace 'test_read_vcf' 'dont_test_read_vcf'
+    # np.string_` was removed in the NumPy 2.0 release. Use `np.bytes_` instead.
+    substituteInPlace skgenome/intersect.py \
+      --replace 'np.string_' 'np.bytes_'
   '';
 
   propagatedBuildInputs = [
